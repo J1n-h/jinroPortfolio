@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이진헌 | Portfolio</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-inner">
+        <div class="logo">이진헌</div>
+        <ul class="nav-links">
+          <li><a href="#about" class="active">About</a></li>
+          <li><a href="#projects">Project</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#career">Career</a></li>
+        </ul>
+        <button id="login-btn" class="nav-btn">Login</button>
+        <button id="logout-btn" class="nav-btn" hidden>Logout</button>
+      </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal" hidden>
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h2>Admin Login</h2>
+        <form id="login-form">
+          <input type="email" id="login-email" placeholder="Email" required />
+          <input type="password" id="login-pw" placeholder="Password" required />
+          <p id="login-error" class="error-msg" hidden>이메일 또는 비밀번호가 틀렸습니다.</p>
+          <div class="modal-actions">
+            <button type="button" id="login-cancel" class="btn-secondary">취소</button>
+            <button type="submit" class="btn-primary">로그인</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <section id="about">
+      <div class="about-content">
+        <h1>이진헌</h1>
+        <p class="subtitle">선린인터넷고등학교</p>
+        <ul class="contact-list">
+          <li>
+            <span class="label">Phone</span>
+            <span>010-9726-1719</span>
+          </li>
+          <li>
+            <span class="label">Discord</span>
+            <span>mjinheon</span>
+          </li>
+          <li>
+            <span class="label">Instagram</span>
+            <a href="https://instagram.com/jin.heon10" target="_blank" rel="noopener">@jin.heon10</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-header">
+        <p class="section-title">Project</p>
+        <button class="add-btn admin-only" hidden onclick="toggleForm('project-form')">+ 추가</button>
+      </div>
+      <form id="project-form" class="inline-form" hidden>
+        <input type="text" name="name" placeholder="프로젝트 이름" required />
+        <textarea name="description" placeholder="설명" rows="3" required></textarea>
+        <input type="text" name="github_url" placeholder="GitHub URL (선택)" />
+        <input type="text" name="image_url" placeholder="이미지 URL (선택)" />
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="toggleForm('project-form')">취소</button>
+          <button type="submit" class="btn-primary">등록</button>
+        </div>
+      </form>
+      <div id="project-grid" class="project-grid"></div>
+    </section>
+
+    <section id="skills">
+      <div class="section-header">
+        <p class="section-title">Skills</p>
+        <button class="add-btn admin-only" hidden onclick="toggleForm('skill-form')">+ 추가</button>
+      </div>
+      <form id="skill-form" class="inline-form" hidden>
+        <input type="text" name="name" placeholder="스킬 이름 (예: JavaScript)" required />
+        <input type="text" name="category" placeholder="카테고리 (예: Frontend)" required />
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="toggleForm('skill-form')">취소</button>
+          <button type="submit" class="btn-primary">등록</button>
+        </div>
+      </form>
+      <div id="skills-container" class="skills-container"></div>
+    </section>
+
+    <section id="career">
+      <div class="section-header">
+        <p class="section-title">Career</p>
+        <button class="add-btn admin-only" hidden onclick="toggleForm('career-form')">+ 추가</button>
+      </div>
+      <form id="career-form" class="inline-form" hidden>
+        <input type="text" name="title" placeholder="제목" required />
+        <textarea name="description" placeholder="설명" rows="3" required></textarea>
+        <input type="text" name="link" placeholder="링크 URL (선택)" />
+        <input type="text" name="image_url" placeholder="이미지 URL (선택)" />
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="toggleForm('career-form')">취소</button>
+          <button type="submit" class="btn-primary">등록</button>
+        </div>
+      </form>
+      <div id="career-grid" class="career-grid"></div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
