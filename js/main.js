@@ -13,7 +13,115 @@ document.addEventListener("DOMContentLoaded", () => {
   setupScrollSpy();
   setupLogin();
   setupForms();
+  initBackground();
+  initScrollReveal();
 });
+
+// --- Background Wave Animation ---
+function initBackground() {
+  const canvas = document.getElementById("bg-canvas");
+  const ctx = canvas.getContext("2d");
+  let w, h, cols, rows, grid, prev;
+  const spacing = 28;
+  const damping = 0.97;
+  const spread = 0.3;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    cols = Math.ceil(w / spacing) + 2;
+    rows = Math.ceil(h / spacing) + 2;
+    grid = Array.from({ length: rows }, () => new Float32Array(cols));
+    prev = Array.from({ length: rows }, () => new Float32Array(cols));
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  function drop() {
+    const cx = Math.floor(Math.random() * cols);
+    const cy = Math.floor(Math.random() * rows);
+    const strength = 1.5 + Math.random() * 2;
+    for (let dy = -2; dy <= 2; dy++) {
+      for (let dx = -2; dx <= 2; dx++) {
+        const r = cy + dy;
+        const c = cx + dx;
+        if (r >= 0 && r < rows && c >= 0 && c < cols) {
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          grid[r][c] += strength * Math.max(0, 1 - dist / 2.5);
+        }
+      }
+    }
+  }
+
+  let dropTimer = 0;
+  function update() {
+    dropTimer++;
+    if (dropTimer > 90) {
+      drop();
+      dropTimer = 0;
+    }
+
+    const next = Array.from({ length: rows }, () => new Float32Array(cols));
+    for (let r = 1; r < rows - 1; r++) {
+      for (let c = 1; c < cols - 1; c++) {
+        const avg =
+          (grid[r - 1][c] + grid[r + 1][c] + grid[r][c - 1] + grid[r][c + 1]) * spread;
+        next[r][c] = (avg - prev[r][c]) * damping;
+      }
+    }
+    prev = grid;
+    grid = next;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const val = grid[r][c];
+        if (Math.abs(val) < 0.01) continue;
+
+        const x = c * spacing;
+        const y = r * spacing;
+        const brightness = Math.min(255, Math.abs(val) * 40);
+        const alpha = Math.min(0.15, Math.abs(val) * 0.06);
+
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5 + Math.abs(val) * 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${alpha})`;
+        ctx.fill();
+      }
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  drop();
+  loop();
+}
+
+// --- Scroll Reveal ---
+function initScrollReveal() {
+  const revealEls = document.querySelectorAll(".reveal, .reveal-children");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  revealEls.forEach((el) => observer.observe(el));
+}
 
 // --- Auth ---
 async function checkAuth() {

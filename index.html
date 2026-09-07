@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <canvas id="bg-canvas"></canvas>
     <nav>
       <div class="nav-inner">
         <div class="logo">이진헌</div>
@@ -39,10 +40,10 @@
     </div>
 
     <section id="about">
-      <div class="about-content">
+      <div class="about-content reveal">
         <h1>이진헌</h1>
         <p class="subtitle">선린인터넷고등학교</p>
-        <ul class="contact-list">
+        <ul class="contact-list reveal-children">
           <li>
             <span class="label">Phone</span>
             <span>010-9726-1719</span>
@@ -60,7 +61,7 @@
     </section>
 
     <section id="projects">
-      <div class="section-header">
+      <div class="section-header reveal">
         <p class="section-title">Project</p>
         <button class="add-btn admin-only" hidden onclick="toggleForm('project-form')">+ 추가</button>
       </div>
@@ -74,11 +75,11 @@
           <button type="submit" class="btn-primary">등록</button>
         </div>
       </form>
-      <div id="project-grid" class="project-grid"></div>
+      <div id="project-grid" class="project-grid reveal-children"></div>
     </section>
 
     <section id="skills">
-      <div class="section-header">
+      <div class="section-header reveal">
         <p class="section-title">Skills</p>
         <button class="add-btn admin-only" hidden onclick="toggleForm('skill-form')">+ 추가</button>
       </div>
@@ -90,11 +91,11 @@
           <button type="submit" class="btn-primary">등록</button>
         </div>
       </form>
-      <div id="skills-container" class="skills-container"></div>
+      <div id="skills-container" class="skills-container reveal-children"></div>
     </section>
 
     <section id="career">
-      <div class="section-header">
+      <div class="section-header reveal">
         <p class="section-title">Career</p>
         <button class="add-btn admin-only" hidden onclick="toggleForm('career-form')">+ 추가</button>
       </div>
@@ -108,7 +109,7 @@
           <button type="submit" class="btn-primary">등록</button>
         </div>
       </form>
-      <div id="career-grid" class="career-grid"></div>
+      <div id="career-grid" class="career-grid reveal-children"></div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>

@@ -25,6 +25,16 @@ a {
   display: none !important;
 }
 
+/* ── Background Canvas ── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ── Navigation ── */
 nav {
   position: fixed;
@@ -32,9 +42,9 @@ nav {
   left: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 nav .nav-inner {
@@ -62,8 +72,8 @@ nav .nav-links {
 nav .nav-links a {
   font-size: 0.9rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.2s;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s;
   letter-spacing: 0.02em;
 }
 
@@ -75,18 +85,19 @@ nav .nav-links a.active {
 /* ── Nav Button ── */
 .nav-btn {
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
   padding: 6px 16px;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .nav-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
   color: #fff;
 }
 
@@ -104,16 +115,18 @@ nav .nav-links a.active {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
   position: relative;
-  background: #111;
-  border: 1px solid #2a2a2a;
+  background: rgba(14, 14, 14, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 40px;
   width: 100%;
   max-width: 400px;
+  backdrop-filter: blur(20px);
 }
 
 .modal-content h2 {
@@ -124,8 +137,8 @@ nav .nav-links a.active {
 
 .modal-content input {
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 12px 16px;
   color: #fff;
@@ -133,11 +146,12 @@ nav .nav-links a.active {
   font-family: inherit;
   outline: none;
   margin-bottom: 12px;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s, background 0.3s;
 }
 
 .modal-content input:focus {
-  border-color: #555;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .error-msg {
@@ -162,17 +176,18 @@ nav .nav-links a.active {
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
   opacity: 0.85;
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: none;
   color: rgba(255, 255, 255, 0.6);
-  border: 1px solid #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -182,6 +197,72 @@ nav .nav-links a.active {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Sections ── */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 120px 40px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Section Dividers ── */
+#projects,
+#skills,
+#career {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#projects::before,
+#skills::before,
+#career::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+/* ── Scroll Reveal Animation ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger children */
+.reveal-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-children.visible > *:nth-child(1) { transition-delay: 0s; }
+.reveal-children.visible > *:nth-child(2) { transition-delay: 0.08s; }
+.reveal-children.visible > *:nth-child(3) { transition-delay: 0.16s; }
+.reveal-children.visible > *:nth-child(4) { transition-delay: 0.24s; }
+.reveal-children.visible > *:nth-child(5) { transition-delay: 0.32s; }
+.reveal-children.visible > *:nth-child(6) { transition-delay: 0.4s; }
+
+#about {
+  min-height: 100vh;
 }
 
 /* ── Section Header ── */
@@ -208,25 +289,35 @@ nav .nav-links a.active {
   margin-top: 0;
 }
 
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 48px;
+}
+
 .add-btn {
   background: none;
-  border: 1px solid #2a2a2a;
-  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
   padding: 6px 16px;
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .add-btn:hover {
   background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* ── Inline Forms ── */
 .inline-form {
-  background: #111;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 24px;
   margin-top: 20px;
@@ -234,24 +325,26 @@ nav .nav-links a.active {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  backdrop-filter: blur(8px);
 }
 
 .inline-form input[type="text"],
 .inline-form textarea {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 12px 16px;
   color: #fff;
   font-size: 0.9rem;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s, background 0.3s;
 }
 
 .inline-form input[type="text"]:focus,
 .inline-form textarea:focus {
-  border-color: #555;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .inline-form textarea {
@@ -267,17 +360,18 @@ nav .nav-links a.active {
 /* ── Delete Buttons ── */
 .delete-btn {
   background: none;
-  border: 1px solid rgba(255, 80, 80, 0.3);
-  color: rgba(255, 80, 80, 0.8);
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  color: rgba(255, 80, 80, 0.7);
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 0.8rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .delete-btn:hover {
-  background: rgba(255, 80, 80, 0.15);
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 80, 80, 0.4);
 }
 
 .card-actions {
@@ -289,7 +383,7 @@ nav .nav-links a.active {
 .delete-tag {
   background: none;
   border: none;
-  color: rgba(255, 80, 80, 0.7);
+  color: rgba(255, 80, 80, 0.6);
   font-size: 0.85rem;
   cursor: pointer;
   margin-left: 6px;
@@ -298,26 +392,6 @@ nav .nav-links a.active {
 
 .delete-tag:hover {
   color: #f55;
-}
-
-/* ── Sections ── */
-section {
-  padding: 120px 40px 80px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-#about {
-  min-height: 100vh;
-}
-
-.section-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 48px;
 }
 
 /* ── About ── */
@@ -341,7 +415,7 @@ section {
 
 .about-content .subtitle {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   margin-bottom: 40px;
 }
 
@@ -358,7 +432,7 @@ section {
   align-items: center;
   gap: 8px;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .contact-list .label {
@@ -374,16 +448,17 @@ section {
 }
 
 .project-card {
-  background: #141414;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
+  transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
 }
 
 .project-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .project-card img {
@@ -396,12 +471,12 @@ section {
 .project-card .no-image {
   width: 100%;
   height: 200px;
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.02);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.1);
 }
 
 .project-card .card-body {
@@ -416,7 +491,7 @@ section {
 
 .project-card p {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: 16px;
   line-height: 1.5;
 }
@@ -427,15 +502,16 @@ section {
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 6px 14px;
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .project-card .github-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* ── Skills ── */
@@ -450,7 +526,7 @@ section {
   font-weight: 700;
   margin-bottom: 20px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .skill-tags {
@@ -460,17 +536,19 @@ section {
 }
 
 .skill-tag {
-  background: #141414;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: background 0.2s;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
 }
 
 .skill-tag:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* ── Career ── */
@@ -481,16 +559,17 @@ section {
 }
 
 .career-card {
-  background: #141414;
-  border: 1px solid #2a2a2a;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
+  transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
 }
 
 .career-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .career-card img {
@@ -503,12 +582,12 @@ section {
 .career-card .no-image {
   width: 100%;
   height: 200px;
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.02);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.1);
 }
 
 .career-card .card-body {
@@ -523,7 +602,7 @@ section {
 
 .career-card p {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: 16px;
   line-height: 1.5;
 }
@@ -534,22 +613,23 @@ section {
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 6px 14px;
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .career-card .career-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* ── Empty state ── */
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.2);
   font-size: 0.95rem;
 }
 
