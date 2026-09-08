@@ -75,7 +75,10 @@
         <input type="text" name="name" placeholder="프로젝트 이름" required />
         <textarea name="description" placeholder="설명" rows="3" required></textarea>
         <input type="text" name="github_url" placeholder="GitHub URL (선택)" />
-        <input type="text" name="image_url" placeholder="이미지 URL (선택)" />
+        <label class="file-upload-label">
+          <span class="file-upload-text">이미지 선택 (선택)</span>
+          <input type="file" name="image" accept="image/*" />
+        </label>
         <div class="form-actions">
           <button type="button" class="btn-secondary" onclick="toggleForm('project-form')">취소</button>
           <button type="submit" class="btn-primary">등록</button>
@@ -109,7 +112,10 @@
         <input type="text" name="title" placeholder="제목" required />
         <textarea name="description" placeholder="설명" rows="3" required></textarea>
         <input type="text" name="link" placeholder="링크 URL (선택)" />
-        <input type="text" name="image_url" placeholder="이미지 URL (선택)" />
+        <label class="file-upload-label">
+          <span class="file-upload-text">이미지 선택 (선택)</span>
+          <input type="file" name="image" accept="image/*" />
+        </label>
         <div class="form-actions">
           <button type="button" class="btn-secondary" onclick="toggleForm('career-form')">취소</button>
           <button type="submit" class="btn-primary">등록</button>

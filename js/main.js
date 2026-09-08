@@ -288,18 +288,60 @@ function toggleForm(formId) {
   if (!form.hidden) form.querySelector("input, textarea").focus();
 }
 
+async function uploadImage(file) {
+  const ext = file.name.split(".").pop();
+  const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await sb.storage.from("images").upload(path, file);
+  if (error) throw error;
+  const { data } = sb.storage.from("images").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+function setupFileInputs() {
+  document.querySelectorAll('.file-upload-label input[type="file"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      const label = input.closest(".file-upload-label");
+      const textEl = label.querySelector(".file-upload-text");
+      if (input.files.length > 0) {
+        textEl.textContent = input.files[0].name;
+        label.classList.add("has-file");
+      } else {
+        textEl.textContent = "이미지 선택 (선택)";
+        label.classList.remove("has-file");
+      }
+    });
+  });
+}
+
 function setupForms() {
+  setupFileInputs();
+
   document.getElementById("project-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const form = e.target;
+    const btn = form.querySelector(".btn-primary");
+    btn.textContent = "업로드 중...";
+    btn.disabled = true;
+
     const data = Object.fromEntries(new FormData(form));
+    const fileInput = form.querySelector('input[type="file"]');
+    let image_url = null;
+
+    if (fileInput.files.length > 0) {
+      image_url = await uploadImage(fileInput.files[0]);
+    }
+
     await sb.from("projects").insert({
       name: data.name,
       description: data.description,
       github_url: data.github_url || null,
-      image_url: data.image_url || null,
+      image_url,
     });
     form.reset();
+    form.querySelector(".file-upload-text").textContent = "이미지 선택 (선택)";
+    form.querySelector(".file-upload-label").classList.remove("has-file");
+    btn.textContent = "등록";
+    btn.disabled = false;
     form.hidden = true;
     loadProjects();
   });
@@ -320,14 +362,29 @@ function setupForms() {
   document.getElementById("career-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const form = e.target;
+    const btn = form.querySelector(".btn-primary");
+    btn.textContent = "업로드 중...";
+    btn.disabled = true;
+
     const data = Object.fromEntries(new FormData(form));
+    const fileInput = form.querySelector('input[type="file"]');
+    let image_url = null;
+
+    if (fileInput.files.length > 0) {
+      image_url = await uploadImage(fileInput.files[0]);
+    }
+
     await sb.from("careers").insert({
       title: data.title,
       description: data.description,
       link: data.link || null,
-      image_url: data.image_url || null,
+      image_url,
     });
     form.reset();
+    form.querySelector(".file-upload-text").textContent = "이미지 선택 (선택)";
+    form.querySelector(".file-upload-label").classList.remove("has-file");
+    btn.textContent = "등록";
+    btn.disabled = false;
     form.hidden = true;
     loadCareers();
   });

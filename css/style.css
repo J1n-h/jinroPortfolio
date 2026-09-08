@@ -413,6 +413,42 @@ section {
   resize: vertical;
 }
 
+/* ── File Upload ── */
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.file-upload-label:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.file-upload-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.file-upload-label input[type="file"] {
+  display: none;
+}
+
+.file-upload-label.has-file {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-style: solid;
+}
+
+.file-upload-label.has-file .file-upload-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .form-actions {
   display: flex;
   gap: 8px;
